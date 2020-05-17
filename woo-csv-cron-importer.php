@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+define('WOOCCI_MAIN_FILE', __FILE__);
+
 /**
  * Add menu
  */

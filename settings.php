@@ -136,11 +136,18 @@
         return $timestamp - wc_timezone_offset();
     }
 
-    function woocci_reschedule( $timestamp, $interval ) {
+    /**
+     * Deactivation hook
+     */
+    register_deactivation_hook( WOOCCI_MAIN_FILE, 'woocci_unschedule_event');
+    function woocci_unschedule_event() {
         // delete old event
         $next_timestamp = wp_next_scheduled( 'bl_woocci_cron_hook' );
         wp_unschedule_event( $next_timestamp, 'bl_woocci_cron_hook' );
+    }
 
+    function woocci_reschedule( $timestamp, $interval ) {
+        woocci_unschedule_event();
         wp_schedule_event( $timestamp, $interval, 'bl_woocci_cron_hook' );
     }
 
