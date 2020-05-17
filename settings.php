@@ -262,8 +262,11 @@
     function woocci_new_mapping_field_cb()
     {
         $mapping = get_option('woocci_new_mapping');
+        if(empty($mapping)) {
+            $mapping = implode(get_user_option( 'woocommerce_product_import_mapping', get_current_user_id() ), ",");
+        }
         ?>
-        <input name="woocci_new_mapping" value="<?php echo isset( $mapping ) ? esc_attr( $mapping ) : ''; ?>"> разделенные запятой
+        <input name="woocci_new_mapping" value="<?php echo !empty( $mapping ) ? esc_attr( $mapping ) : '' ?>"> разделенные запятой
         <?php
     }
 
@@ -271,6 +274,9 @@
     function woocci_update_mapping_field_cb()
     {
         $mapping = get_option('woocci_update_mapping');
+        if(empty($mapping)) {
+            $mapping = implode(get_user_option( 'woocommerce_product_import_mapping', get_current_user_id() ), ",");
+        }
         ?>
         <input name="woocci_update_mapping" value="<?php echo isset( $mapping ) ? esc_attr( $mapping ) : ''; ?>"> разделенные запятой
         <?php

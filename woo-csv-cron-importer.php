@@ -68,11 +68,7 @@ function woocci_main_job_function( $file_path, $start_pos, $update_existing ) {
     $mapping_option = 'woocci_' . ($update_existing ? 'update' : 'new') . '_mapping';
     $mapping_from_settings = get_option( $mapping_option );
 
-    if( !empty( $mapping_from_settings ) ) {
-        $mapping_to = explode(",", $mapping_from_settings);
-    } else {
-        $mapping_to = get_user_option( 'woocommerce_product_import_mapping', get_current_user_id() );
-    }
+    $mapping_to = explode(",", $mapping_from_settings);
 
     if($mapping_to !== false) {
         foreach($mapping_to as $k => $v) {
