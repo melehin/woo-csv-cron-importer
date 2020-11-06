@@ -95,6 +95,8 @@ function woocci_main_job_function( $file_path, $start_pos, $update_existing ) {
         'update_existing' => $update_existing,
     );
 
+    global $current_user;
+    error_log( 'User id is ' . $current_user->ID);
     error_log( 'Continue from pos: ' . $start_pos );
     $importer = new WC_Product_CSV_Importer( $file_path, $args );
     try {
@@ -210,7 +212,14 @@ function woocci_import() {
 add_action( 'wp_ajax_init_action', 'woocci_init_action' );
 add_action( 'wp_ajax_nopriv_init_action', 'woocci_init_action' );
 function woocci_init_action() {
+    global $current_user;
     if( isset( $_GET['key'] ) && $_GET['key'] == get_option( 'woocci_init_action_key' ) ) {
+        $user = get_user_by('id', 1);
+        $user_id = $user->ID; 
+        $user_login = $user->Username; 
+        // escalate user from 0 to 1
+        wp_set_current_user($user_id, $user_login);
+        error_log( 'User id is ' . $user_id . ' login is ' . $user_login);
         woocci_cron_hook( $from_ajax = true );
         echo 'ok';
     } else {
